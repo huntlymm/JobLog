@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <title>JobLog Job Saver Extension</title>
+  <style>
+  body {
+    min-width: 357px;
+    overflow-x: hidden;
+  }
+  </style>
+  <script src="popup.js"></script>
+</head>
+<body>
+  <p id="test"></p>
+  <form role="form">
+      <label>Company Name:</label>
+      <input type="text" class="form-control" id="company-name" name="companyName" placeholder="">
+      <br>
+      <label>Job Position:</label>
+      <input type="text" class="form-control" id="position" name="position" placeholder="">
+      <br>
+      <label>Position Tier:</label>
+      <select name="tier">
+        <option value="Top">Top</option>
+        <option value="Mid">Mid</option>
+        <option value="Low">Low</option>
+      </select>
+      <br>
+      <label>Personal Connection:</label>
+      <input type="text" class="form-control" name="connection" placeholder="Know anyone there?">
+      <br>
+      <label>Notes:</label>
+      <br>
+      <textarea class="form-control" name="notes" id="notes" rows='10'></textarea>
+      <br>
+      <button type="submit" class="btn">Save Job</button>
+  </form>
+  <p id="url" hidden="true"></p>
+</body>
+</html>
