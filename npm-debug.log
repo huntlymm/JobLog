@@ -20,7 +20,7 @@
 11 error There is likely additional logging output above.
 12 error System Darwin 12.5.0
 13 error command "node" "/usr/local/bin/npm" "start"
-14 error cwd /Users/huntlymayo/code/streak-test
+14 error cwd /Users/huntlymayo/code/joblog
 15 error node -v v0.10.26
 16 error npm -v 1.4.6
 17 error code ELIFECYCLE
