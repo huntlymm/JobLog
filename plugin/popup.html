@@ -5,14 +5,15 @@
   <style>
   body {
     min-width: 357px;
+    min-height: 257px;
     overflow-x: hidden;
   }
   </style>
+  <link href="style.css" rel="stylesheet">
   <script src="jquery-2.1.1.min.js"></script>
   <script src="popup.js"></script>
 </head>
 <body>
-  <p id="test"></p>
   <form role="form" id="jobForm">
       <label>Company Name:</label>
       <input type="text" class="form-control" id="companyName" name="companyName" placeholder="">
@@ -38,5 +39,33 @@
       <button type="submit" class="btn">Save Job</button>
   </form>
 
+<h3 id="status" hidden="true"></h3>
+
+<!-- spinner -->
+<div class="spinner" hidden="true">
+  <p>Saving Job...</p>
+  <div class="windows8">
+    <div class="wBall" id="wBall_1">
+      <div class="wInnerBall">
+      </div>
+    </div>
+    <div class="wBall" id="wBall_2">
+      <div class="wInnerBall">
+      </div>
+    </div>
+    <div class="wBall" id="wBall_3">
+      <div class="wInnerBall">
+      </div>
+    </div>
+    <div class="wBall" id="wBall_4">
+      <div class="wInnerBall">
+      </div>
+    </div>
+    <div class="wBall" id="wBall_5">
+      <div class="wInnerBall">
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

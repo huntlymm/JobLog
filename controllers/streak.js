@@ -5,18 +5,6 @@ var Streak = require('streakapi'),
 var apiKey = config.streakApiKey;
 Streak.init(apiKey);
 
-//Dummy callbacks
-
-var finalCB = function(updatedBoxData) {
-  console.log('this is the data');
-  console.log(updatedBoxData);
-};
-
-var errCB = function(err) {
-console.log('this is the err');
-console.log(err);
-};
-
 // Get user's pipelines, assume only 1 exists and it's career search
 var findPipelines = function() {
   return new Promise(function(resolve, reject) {
@@ -27,30 +15,50 @@ var findPipelines = function() {
 //create new box
 var newBox = function(userInput, pipelineKey){
   return new Promise(function(resolve, reject) {
-    var boxData = {name: userInput.name, notes: userInput.notes};
+    var boxData = {name: userInput.name, notes: userInput.notes, stageKey: userInput.stageKey};
     Streak.Boxes.create(pipelineKey, boxData, resolve, reject);
   });
 };
 
 // update/add a field to the box
 var addField = function(fieldData, boxKey) {
-    Streak.Boxes.Fields.update(boxKey, fieldData, finalCB, errCB);
+  return new Promise(function(resolve, reject) {
+    Streak.Boxes.Fields.update(boxKey, fieldData, resolve, reject);
+  });
 };
 
-exports.createNewBox = function(input) {
+exports.createNewBox = function(input, cb) {
   console.log('inputted info');
   console.log(input);
   findPipelines().then(function(data){
     console.log('pipeline data..');
     console.log(data[0].pipelineKey);
-    newBox(input, data[0].pipelineKey).then(function(savedBox){
-      console.log('savedBox');
-      console.log(savedBox);
-      //have to add each field individually, per Streak API
-      input.fields.forEach(function(field){
-        addField(field, savedBox.boxKey);
+    newBox(input, data[0].pipelineKey)
+      .then(function(savedBox){
+        console.log('savedBox');
+        console.log(savedBox);
+
+        var fieldPromiseArr;
+        //have to add each field individually, per Streak API
+        fieldPromiseArr = input.fields.map(function(field){
+          return addField(field, savedBox.boxKey);
+        });
+        Promise.all(fieldPromiseArr)
+          .then(function(boxFieldArr){
+            console.log('this is the boxFieldArr');
+            console.log(boxFieldArr);
+            var savedPosition;
+            boxFieldArr.forEach(function(boxField){
+              if (boxField.key === "1003") {
+                savedPosition = boxField.value;
+              }
+            });
+            cb({status: true, position: savedPosition});
+          });
+        })
+      .catch(function(err){
+        cb({status: false, error: err});
       });
-    });
   });
 };
 

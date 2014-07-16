@@ -4,7 +4,7 @@ var jobData = {};
 jobData.companyName = document.getElementsByClassName("profile-link")[0].textContent;
 
 var fullPosition = document.title.toString();
-jobData.position = fullPosition.slice(0,fullPosition.indexOf('at')-1);
+jobData.position = fullPosition.slice(0,fullPosition.indexOf('job')-1);
 
 jobData.url = location.href;
 
