@@ -1,6 +1,6 @@
 var Streak = require('streakapi'),
     Promise = require('bluebird'),
-    config = require('../config/index');
+    config = require('../config/production');
 
 var apiKey = config.streakApiKey;
 Streak.init(apiKey);
