@@ -1,5 +1,3 @@
-
-
-module.exports = {
-  streakApiKey: process.env.STREAK_KEY
-};
+// module.exports = {
+//   streakApiKey: process.env.STREAK_KEY
+// };

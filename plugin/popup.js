@@ -56,7 +56,7 @@ function saveJob(job, callback) {
   };
 
 
-  var url = 'http://limitless-reaches-6594.herokuapp.com/create-pursuit';
+  var url = 'http://localhost:3000/create-pursuit';
   xhr.open('POST', url, true);
   xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhr.send(JSON.stringify(job));
