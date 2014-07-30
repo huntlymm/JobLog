@@ -1,27 +1,69 @@
 var jobData = {};
-
-//Get relevant job data from job listing html
-jobData.companyName = document.getElementsByClassName("profile-link")[0].textContent;
-
-var fullPosition = document.title.toString();
-jobData.position = fullPosition.slice(0,fullPosition.indexOf('job')-1);
-
-jobData.url = location.href;
-
-var jobLocations = document.getElementsByClassName("locations");
+var pullData = {};
+var fullPosition;
 var jobLocation;
+var salary;
 
-if (typeof jobLocations[0] !== "undefined") {
-  jobLocation = jobLocations[0].textContent;
+//Define current page's site, to choose appropriate scraper//
+var baseUrl = location.host.replace(/www./,"");
+var site = baseUrl.slice(0,baseUrl.indexOf("."));
+if (baseUrl === "careers.stackoverflow.com") {
+  site = "stackoverflow";
 }
 
-var salary = document.getElementsByClassName("salary")[0].textContent;
+// Page scrape functions //
+var getCompany = function(companyClass, arrIndex){
+  jobData.companyName = document.getElementsByClassName(companyClass)[arrIndex].textContent;
+};
 
-salary = salary.replace("Salary", "").replace(/\n/g, "");
+var getPosition = function(pageTitleWordBreak) {
+  fullPosition = document.title.toString();
+  jobData.position = fullPosition.slice(0,fullPosition.indexOf('pageTitleWordBreak'));
+};
 
-jobData.notes = "Location: " + jobLocation + "\n" + "Comp: " + salary;
+var getUrl = function() {
+  jobData.url = location.href;
+};
 
-console.log(jobData);
+var getLocation = function(locationClass) {
+  var jobLocations = document.getElementsByClassName(locationClass);
+  if (typeof jobLocations[0] !== "undefined") {
+    jobLocation = jobLocations[0].textContent;
+  }
+};
 
-//send job data to popup.js
+var getSalary = function(salaryClass) {
+  salary = document.getElementsByClassName(salaryClass)[0].textContent;
+  salary = salary.replace("Salary", "").replace(/\n/g, "");
+};
+
+// Website Specific Scraper Functions //
+pullData.angel = function() {
+  getCompany("profile-link", 0);
+  getPosition(' job');
+  getUrl();
+  getLocation("locations");
+  getSalary("salary");
+  jobData.notes = "Location: " + jobLocation + "\n" + "Comp: " + salary;
+};
+
+//LinkedIn functionality not working- code runs 2x-3x when popup is loaded, need to debug
+pullData.linkedin = function() {
+  console.log('on linked in');
+  getPosition(' at');
+};
+
+pullData.stackoverflow = function() {
+  getCompany("employer", 0);
+  getPosition(' at');
+  getUrl();
+  jobData.notes = "";
+};
+
+pullData.jobs = function() {
+  getPosition(' at');
+}
+
+//Run scraper, send job data to popup.js
+pullData[site]();
 chrome.extension.sendRequest(jobData);
